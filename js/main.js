@@ -6,6 +6,15 @@ const tarifaNino = 5000
 const tarifaAdulto = 10000
 const tarifaAdultoMayor = 7000
 
+// ARRAY DE EVENTOS DISPONIBLES
+let eventosDisponibles = [
+    "Concierto",
+    "Teatro",
+    "Cine",
+    "Deportes",
+    "Festival"
+]
+
 // FUNCIÓN PARA CALCULAR PRECIO DE ENTRADA
 function calcularPrecio(edad) {
     let precioEntrada = 0
@@ -32,40 +41,69 @@ const sumarEntrada = (total, precio) => {
 }
 
 // FUNCIÓN PARA MOSTRAR EL RESUMEN DE LA COMPRA
-function mostrarResumen(nombre, cantidadEntradas, totalPagar) {
-    console.log(nombre + ", reservaste " + cantidadEntradas + " entradas. El total a pagar es: $" + totalPagar)
+function mostrarResumen(nombre, evento, cantidadEntradas, totalPagar) {
+    console.log(nombre + ", reservaste " + cantidadEntradas + " entradas para " + evento + ". El total a pagar es: $" + totalPagar)
 }
+
+// FUNCIÓN PARA MOSTRAR EVENTOS DISPONIBLES
+function mostrarEventos(lista) {
+    console.log("EVENTOS DISPONIBLES:")
+
+    for (const evento of lista) {
+        console.log("Evento: " + evento)
+    }
+
+    console.log("Total de eventos: " + lista.length)
+}
+
+// MANIPULACIÓN DE EVENTOS
+eventosDisponibles.push("Comedia")
+
+eventosDisponibles.unshift("Estreno VIP")
+
+let eventoEliminado = eventosDisponibles.pop()
+
+console.log("Se ha eliminado el evento: " + eventoEliminado)
+
+// BÚSQUEDA DE EVENTOS
+let eventoBuscado = prompt("¿Qué evento desea buscar?")
+
+if (eventosDisponibles.includes(eventoBuscado)) {
+    let posicionEvento = eventosDisponibles.indexOf(eventoBuscado)
+
+    console.log("El evento " + eventoBuscado + " está disponible en la posición " + posicionEvento)
+} else {
+    console.log("El evento " + eventoBuscado + " no está disponible")
+}
+
+// ACTUALIZACIÓN DE EVENTOS
+eventosDisponibles.splice(3, 1, "Cine 3D")
+
+console.log("Se ha actualizado el evento Cine por Cine 3D")
+
+// MOSTRAR CARTELERA ACTUALIZADA
+mostrarEventos(eventosDisponibles)
 
 // INICIO
 let nombre = prompt("Ingrese su nombre: ")
 console.log("Ahora puedes iniciar tu reserva, " + nombre)
 
-// EVENTOS DISPONIBLES
+// SELECCIÓN DE EVENTO
 let evento = ""
 
 do {
-    evento = prompt("Ingrese el evento al que desea asistir: 1. Concierto 2. Teatro 3. Cine 4. Deportes")
-} while (evento !== "1" &&
-         evento !== "2" &&
-         evento !== "3" &&
-         evento !== "4")
+    evento = prompt(
+        "Ingrese el nombre del evento al que desea asistir:\n" +
+        eventosDisponibles.join("\n")
+    )
 
-switch (evento) {
-    case "1":
-        console.log(nombre + " ha seleccionado el evento: Concierto")
-        break;
-    case "2":
-        console.log(nombre + " ha seleccionado el evento: Teatro")
-        break;
-    case "3":
-        console.log(nombre + " ha seleccionado el evento: Cine")
-        break;
-    case "4":
-        console.log(nombre + " ha seleccionado el evento: Deportes")
-        break;
-    default:
-        console.log("No ha seleccionado un evento válido")
-}
+    if (!eventosDisponibles.includes(evento)) {
+        console.log("El evento ingresado no está disponible")
+    }
+
+} while (!eventosDisponibles.includes(evento))
+
+console.log(nombre + " ha seleccionado el evento: " + evento)
 
 // CANTIDAD DE ENTRADAS
 let cantidadEntradas = Number(prompt("Ingrese la cantidad de entradas que desea comprar: "))
@@ -100,4 +138,4 @@ for (let i = 1; i <= cantidadEntradas; i++) {
 }
 
 // FINALIZACIÓN DE LA COMPRA
-mostrarResumen(nombre, cantidadEntradas, totalPagar)
+mostrarResumen(nombre, evento, cantidadEntradas, totalPagar)
