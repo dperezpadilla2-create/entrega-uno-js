@@ -6,6 +6,34 @@ const tarifaNino = 5000
 const tarifaAdulto = 10000
 const tarifaAdultoMayor = 7000
 
+// CLASE PARA REPRESENTAR UNA ENTRADA
+class Entrada {
+    constructor(id, evento, edad, precio) {
+        this.id = id
+        this.evento = evento
+        this.edad = edad
+        this.precio = precio
+    }
+
+    mostrarDetalle() {
+        console.log("Entrada: " + this.id)
+        console.log("Evento: " + this.evento)
+        console.log("Edad: " + this.edad)
+        console.log("Precio: $" + this.precio)
+    }
+}
+
+// INSTANCIAS DE PRUEBA
+const entrada1 = new Entrada(1, "Concierto", 25, 10000)
+const entrada2 = new Entrada(2, "Teatro", 10, 5000)
+const entrada3 = new Entrada(3, "Cine", 67, 7000)
+
+// VERIFICACIÓN DE LOS OBJETOS
+console.log("ENTRADAS DE PRUEBA:")
+entrada1.mostrarDetalle()
+entrada2.mostrarDetalle()
+entrada3.mostrarDetalle()
+
 // ARRAY DE EVENTOS DISPONIBLES
 let eventosDisponibles = [
     "Concierto",
@@ -68,10 +96,18 @@ console.log("Se ha eliminado el evento: " + eventoEliminado)
 // BÚSQUEDA DE EVENTOS
 let eventoBuscado = prompt("¿Qué evento desea buscar?")
 
-if (eventosDisponibles.includes(eventoBuscado)) {
-    let posicionEvento = eventosDisponibles.indexOf(eventoBuscado)
+let eventoEncontrado = ""
 
-    console.log("El evento " + eventoBuscado + " está disponible en la posición " + posicionEvento)
+for (const evento of eventosDisponibles) {
+    if (evento.toLowerCase() === eventoBuscado.toLowerCase()) {
+        eventoEncontrado = evento
+    }
+}
+
+if (eventoEncontrado !== "") {
+    let posicionEvento = eventosDisponibles.indexOf(eventoEncontrado)
+
+    console.log("El evento " + eventoEncontrado + " está disponible en la posición " + posicionEvento)
 } else {
     console.log("El evento " + eventoBuscado + " no está disponible")
 }
@@ -90,6 +126,7 @@ console.log("Ahora puedes iniciar tu reserva, " + nombre)
 
 // SELECCIÓN DE EVENTO
 let evento = ""
+let eventoSeleccionado = ""
 
 do {
     evento = prompt(
@@ -97,11 +134,21 @@ do {
         eventosDisponibles.join("\n")
     )
 
-    if (!eventosDisponibles.includes(evento)) {
+    eventoSeleccionado = ""
+
+    for (const eventoDisponible of eventosDisponibles) {
+        if (eventoDisponible.toLowerCase() === evento.toLowerCase()) {
+            eventoSeleccionado = eventoDisponible
+        }
+    }
+
+    if (eventoSeleccionado === "") {
         console.log("El evento ingresado no está disponible")
     }
 
-} while (!eventosDisponibles.includes(evento))
+} while (eventoSeleccionado === "")
+
+evento = eventoSeleccionado
 
 console.log(nombre + " ha seleccionado el evento: " + evento)
 
@@ -121,6 +168,9 @@ console.log("Ha seleccionado " + cantidadEntradas + " entradas")
 // TOTAL A PAGAR
 let totalPagar = 0
 
+// ARRAY PARA GUARDAR LAS ENTRADAS COMPRADAS
+let entradasCompradas = []
+
 // TIPO DE ASISTENTE Y PRECIO DE ENTRADA
 for (let i = 1; i <= cantidadEntradas; i++) {
     let edad = Number(prompt("Ingrese la edad del asistente " + i + ": "))
@@ -135,6 +185,15 @@ for (let i = 1; i <= cantidadEntradas; i++) {
     console.log("El asistente " + i + " paga: $" + precioEntrada)
 
     totalPagar = sumarEntrada(totalPagar, precioEntrada)
+
+    // CREACIÓN DEL OBJETO ENTRADA
+    const nuevaEntrada = new Entrada(i, evento, edad, precioEntrada)
+
+    // GUARDAR EL OBJETO EN EL ARRAY
+    entradasCompradas.push(nuevaEntrada)
+
+    // MOSTRAR LOS DATOS DE LA ENTRADA
+    nuevaEntrada.mostrarDetalle()
 }
 
 // FINALIZACIÓN DE LA COMPRA
